@@ -1,6 +1,5 @@
-load("render.star", "render")
 load("http.star", "http")
-load("encoding/json.star", "json")
+load("render.star", "render")
 load("time.star", "time")
 
 # Entur API endpoint for real-time departures
@@ -19,8 +18,8 @@ def main(config):
         color = "#333333",
         child = render.Text(
             content = stop_name,
-            font = "5x8"
-        )
+            font = "5x8",
+        ),
     )
 
     # GraphQL query for departures
@@ -63,9 +62,9 @@ def main(config):
             child = render.Column(
                 children = [
                     header,
-                    render.Text("Error fetching data")
-                ]
-            )
+                    render.Text("Error fetching data"),
+                ],
+            ),
         )
 
     # Parse the JSON response
@@ -81,18 +80,13 @@ def main(config):
                     for call in quay["estimatedCalls"]:
                         line = call["serviceJourney"]["line"]["publicCode"]
                         departure_time = call["expectedDepartureTime"]
-                        
+
                         # Get current time in the same format as departure_time
                         current_time = time.now().format("2006-01-02T15:04:05-07:00")
-                        
-                        # Format the display text
-                        if departure_time[:16] == current_time[:16]:
-                            display_text = line + " Nå"
-                        else:
-                            # Format the time (HH:MM)
-                            time_str = departure_time[11:16]
-                            display_text = line + " " + time_str
-                        
+
+                        # Determine the time string to display
+                        time_str = "Nå" if departure_time[:16] == current_time[:16] else departure_time[11:16]
+
                         # Create a more compact display with proper spacing
                         departures.append(
                             render.Box(
@@ -105,20 +99,20 @@ def main(config):
                                             child = render.Text(
                                                 content = line,
                                                 font = "5x8",
-                                                color = "#C44536"
-                                            )
+                                                color = "#C44536",
+                                            ),
                                         ),
                                         render.Box(
                                             width = 32,
                                             child = render.Text(
-                                                content = "Nå" if departure_time[:16] == current_time[:16] else time_str,
+                                                content = time_str,
                                                 font = "5x8",
-                                                color = "#197278"
-                                            )
-                                        )
-                                    ]
-                                )
-                            )
+                                                color = "#197278",
+                                            ),
+                                        ),
+                                    ],
+                                ),
+                            ),
                         )
     else:
         print("No stop place data found")
@@ -128,6 +122,6 @@ def main(config):
 
     return render.Root(
         child = render.Column(
-            children = [header] + departures
-        )
+            children = [header] + departures,
+        ),
     )
