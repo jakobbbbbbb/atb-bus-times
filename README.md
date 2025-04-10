@@ -1,48 +1,31 @@
-# ATB Bus Times for Tidbyt
+# ATB Bus Times
 
-This app displays real-time bus departures from ATB stops in Trondheim, Norway on your Tidbyt display.
+A Tidbyt app that displays real-time bus departures from ATB stops in Trondheim, Norway.
 
 ## Features
 
-- Shows upcoming bus departures from your selected stop
-- Displays line number, destination, and minutes until departure
-- Updates every minute with real-time information
-- Default stop is Valøyvegen (northbound) (NSR:StopPlace:5843)
-- Includes a test mode for previewing the display
+- Shows the next three departures from your selected bus stop
+- Displays line numbers and departure times
+- Updates in real-time
+- Shows "Nå" when the bus is due to depart within the next minute
 
 ## Configuration
 
-You can configure the app by setting the following parameters in your Tidbyt app settings:
+To use this app, you need to configure the following settings:
 
-- `stop_id`: The Entur stop ID (default: NSR:StopPlace:5843 for Valøyvegen)
-- `test_mode`: Set to `true` to use test data instead of real-time data
+1. `stop_id`: The Entur ID for your bus stop (e.g., "NSR:StopPlace:42052" for Valøyvegen)
+2. `quay_id`: The specific platform ID at your stop (e.g., "NSR:Quay:71981")
+3. `stop_name`: The display name for your stop (e.g., "Valøyvegen")
 
-## Testing
+You can find these IDs by:
+1. Visiting [Entur's journey planner](https://entur.no)
+2. Searching for your stop
+3. Looking at the URL or using the browser's developer tools
 
-To test the app before publishing:
+## Default Values
 
-1. Install the Tidbyt CLI
-2. Run the following command to test the app locally:
-   ```bash
-   tidbyt apps run atb_bus_times.star --config '{"test_mode": true}'
-   ```
-3. The app will display test data showing how it will look on your Tidbyt
-
-## Finding Your Stop ID
-
-1. Go to [Entur Journey Planner](https://entur.no)
-2. Search for your bus stop
-3. Click on the stop to see its details
-4. The stop ID will be in the URL or you can find it in the page source
-
-## Publishing
-
-To publish this app to your Tidbyt:
-
-1. Make sure you have the Tidbyt CLI installed
-2. Run `tidbyt apps push` in this directory
-3. The app will be available in your Tidbyt's app list
+If no configuration is provided, the app will show departures from Valøyvegen (stop ID: NSR:StopPlace:42052, quay ID: NSR:Quay:71981).
 
 ## Support
 
-If you have any issues or questions, please open an issue in this repository.
+For support or to report issues, please visit the [GitHub repository](https://github.com/yourusername/atb-bus-times).

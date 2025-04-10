@@ -7,20 +7,25 @@ load("time.star", "time")
 ENTUR_API_URL = "https://api.entur.io/journey-planner/v3/graphql"
 
 def main(config):
+    # Get the stop ID from config, default to Valøyvegen if not set
+    stop_id = config.get("stop_id", "NSR:StopPlace:42052")
+    quay_id = config.get("quay_id", "NSR:Quay:71981")
+    stop_name = config.get("stop_name", "Valøyvegen")
+
     # Create the header box
     header = render.Box(
         width = 64,
         height = 8,
         color = "#333333",
         child = render.Text(
-            content = "Valøyvegen",
+            content = stop_name,
             font = "5x8"
         )
     )
 
     # GraphQL query for departures
     query = """{
-      stopPlace(id: "NSR:StopPlace:42052") {
+      stopPlace(id: "%s") {
         name
         quays {
           id
@@ -38,7 +43,7 @@ def main(config):
           }
         }
       }
-    }"""
+    }""" % stop_id
 
     # Set up headers
     headers = {
@@ -67,16 +72,12 @@ def main(config):
     response_data = rep.json()
     departures = []
 
-    # Add debug logging
-    print("Response data:", response_data)
-
     # Extract departure information
     if "data" in response_data and "stopPlace" in response_data["data"]:
         stop_place = response_data["data"]["stopPlace"]
-        print("Stop place data:", stop_place)
         if "quays" in stop_place:
             for quay in stop_place["quays"]:
-                if quay["id"] == "NSR:Quay:71981" and "estimatedCalls" in quay:
+                if quay["id"] == quay_id and "estimatedCalls" in quay:
                     for call in quay["estimatedCalls"]:
                         line = call["serviceJourney"]["line"]["publicCode"]
                         departure_time = call["expectedDepartureTime"]
