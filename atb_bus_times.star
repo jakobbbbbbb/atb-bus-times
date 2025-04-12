@@ -1,9 +1,31 @@
-load("http.star", "http")
 load("render.star", "render")
+load("http.star", "http")
+load("encoding/json.star", "json")
 load("time.star", "time")
 
 # Entur API endpoint for real-time departures
 ENTUR_API_URL = "https://api.entur.io/journey-planner/v3/graphql"
+
+def minutes_until_departure(current_time, departure_time):
+    # Extract HH:MM from ISO format strings
+    current_hours = int(current_time[11:13])
+    current_minutes = int(current_time[14:16])
+    departure_hours = int(departure_time[11:13])
+    departure_minutes = int(departure_time[14:16])
+    
+    # Convert to total minutes
+    current_total = current_hours * 60 + current_minutes
+    departure_total = departure_hours * 60 + departure_minutes
+    
+    # Calculate difference
+    minutes_until = departure_total - current_total
+    
+    # Handle next day case
+    if minutes_until < 0:
+        minutes_until = minutes_until + (24 * 60)
+    
+    return minutes_until
+
 
 def main(config):
     # Get the stop ID from config, default to Valøyvegen if not set
@@ -84,8 +106,14 @@ def main(config):
                         # Get current time in the same format as departure_time
                         current_time = time.now().format("2006-01-02T15:04:05-07:00")
 
+                        # Calculate minutes until departure
+                        minutes_left = minutes_until_departure(current_time, departure_time)
+                        
                         # Determine the time string to display
-                        time_str = "Nå" if departure_time[:16] == current_time[:16] else departure_time[11:16]
+                        if minutes_left <= 1:
+                            time_str = "Nå"
+                        else:
+                            time_str = str(minutes_left) + " min"
 
                         # Create a more compact display with proper spacing
                         departures.append(
