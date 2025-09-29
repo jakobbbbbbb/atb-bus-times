@@ -29,9 +29,9 @@ def minutes_until_departure(current_time, departure_time):
 
 def main(config):
     # Get the stop ID from config, default to Valøyvegen if not set
-    stop_id = config.get("stop_id", "NSR:StopPlace:42052")
-    quay_id = config.get("quay_id", "NSR:Quay:71981")
-    stop_name = config.get("stop_name", "Valøyvegen")
+    stop_id = config.get("stop_id", "NSR:StopPlace:6286")
+    quay_id = config.get("quay_id", "NSR:Quay:11544")
+    stop_name = config.get("stop_name", "Colletts gate")
 
     # Create the header box
     header = render.Box(

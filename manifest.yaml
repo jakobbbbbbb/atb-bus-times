@@ -1,19 +1,19 @@
 id: atb-bus-times
 name: AtB Bus Times
-desc: Shows real-time bus departures for AtB in Trondheim
+desc: Bus departures in Oslo
 author: jakobbbb
-summary: Real-time bus departures for AtB in Trondheim
+summary: Real-time bus departures in Oslo
 category: Transportation
 filename: atb_bus_times.star
 type: app
 config:
   - name: stop_id
     type: string
-    desc: The Entur stop ID (e.g., NSR:StopPlace:42052 for Valøyvegen)
+    desc: The Entur stop ID (e.g., NSR:StopPlace:6286 for Colletts gate)
     required: true
   - name: quay_id
     type: string
-    desc: The Entur quay ID (e.g., NSR:Quay:71981 for Valøyvegen)
+    desc: The Entur quay ID (e.g., NSR:Quay:11544 for Colletts gate)
     required: true
   - name: stop_name
     type: string
