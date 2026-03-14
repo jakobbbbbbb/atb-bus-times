@@ -1,2 +1,0 @@
-# This app uses the Entur API which is free to use
-# No additional Python packages are required 
