@@ -101,7 +101,6 @@ def main(config):
         header = render.Box(
             width = 64,
             height = 5,
-            color = "#333333",
             child = render.Text(
                 content = stop_name,
                 font = "CG-pixel-4x5-mono",
