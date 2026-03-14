@@ -1,10 +1,10 @@
-id: atb-bus-times
+id: entur-departures-no
 name: Norway Transport
 desc: Realtime public transport departures for any stop in Norway.
 author: jakobbbb
 summary: Public transport in Norway
 category: Transportation
-filename: atb_bus_times.star
+filename: entur_departures.star
 type: app
 config:
   - name: stop_id

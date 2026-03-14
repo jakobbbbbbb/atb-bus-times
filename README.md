@@ -36,4 +36,4 @@ You can find the `stop_id` and `quay_id` for any stop in Norway by:
 
 ## Support
 
-For support or to report issues, please visit the [GitHub repository](https://github.com/jakobbbbbbb/atb-bus-times).
+For support or to report issues, please visit the [GitHub repository](https://github.com/jakobbbbbbb/entur-departures-no).
