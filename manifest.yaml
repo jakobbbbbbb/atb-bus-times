@@ -1,8 +1,8 @@
 id: atb-bus-times
-name: Public Transport Times Norway
+name: Norway Transport
 desc: Realtime public transport departures for any stop in Norway.
 author: jakobbbb
-summary: Public transport departures in Norway
+summary: Public transport in Norway
 category: Transportation
 filename: atb_bus_times.star
 type: app
