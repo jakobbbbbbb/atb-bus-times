@@ -31,18 +31,8 @@ def main(config):
     # Get the stop ID from config, default to Valøyvegen if not set
     stop_id = config.get("stop_id", "NSR:StopPlace:6286")
     quay_id = config.get("quay_id", "NSR:Quay:11544")
-    stop_name = config.get("stop_name", "Colletts gate")
-
-    # Create the header box
-    header = render.Box(
-        width = 64,
-        height = 8,
-        color = "#333333",
-        child = render.Text(
-            content = stop_name,
-            font = "5x8",
-        ),
-    )
+    stop_name = config.get("stop_name", "")
+    num_departures = config.get("num_departures", 3)
 
     # GraphQL query for departures
     query = """{
@@ -51,7 +41,7 @@ def main(config):
         quays {
           id
           publicCode
-          estimatedCalls(timeRange: 72000, numberOfDepartures: 3) {
+          estimatedCalls(timeRange: 72000, numberOfDepartures: %d) {
             expectedDepartureTime
             destinationDisplay {
               frontText
@@ -64,7 +54,7 @@ def main(config):
           }
         }
       }
-    }""" % stop_id
+    }""" % (stop_id, num_departures)
 
     # Set up headers
     headers = {
@@ -83,7 +73,15 @@ def main(config):
         return render.Root(
             child = render.Column(
                 children = [
-                    header,
+                    render.Box(
+                        width = 64,
+                        height = 5,
+                        color = "#333333",
+                        child = render.Text(
+                            content = stop_name or "Bus Stop",
+                            font = "CG-pixel-4x5-mono",
+                        ),
+                    ),
                     render.Text("Error fetching data"),
                 ],
             ),
@@ -96,6 +94,20 @@ def main(config):
     # Extract departure information
     if "data" in response_data and "stopPlace" in response_data["data"]:
         stop_place = response_data["data"]["stopPlace"]
+        if not stop_name:
+            stop_name = stop_place.get("name", "Unknown Stop")
+
+        # Create the header box
+        header = render.Box(
+            width = 64,
+            height = 5,
+            color = "#333333",
+            child = render.Text(
+                content = stop_name,
+                font = "CG-pixel-4x5-mono",
+            ),
+        )
+
         if "quays" in stop_place:
             for quay in stop_place["quays"]:
                 if quay["id"] == quay_id and "estimatedCalls" in quay:
@@ -121,12 +133,14 @@ def main(config):
                                 width = 64,
                                 height = 8,
                                 child = render.Row(
+                                    main_align = "space_between",
+                                    cross_align = "start",
                                     children = [
                                         render.Box(
                                             width = 16,
                                             child = render.Text(
                                                 content = line,
-                                                font = "5x8",
+                                                font = "CG-pixel-4x5-mono",
                                                 color = "#C44536",
                                             ),
                                         ),
@@ -134,8 +148,8 @@ def main(config):
                                             width = 32,
                                             child = render.Text(
                                                 content = time_str,
-                                                font = "5x8",
-                                                color = "#197278",
+                                                font = "CG-pixel-4x5-mono",
+                                                color = "#90e0ef",
                                             ),
                                         ),
                                     ],

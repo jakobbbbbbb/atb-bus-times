@@ -1,8 +1,8 @@
 id: atb-bus-times
-name: AtB Bus Times
-desc: Bus departures in Oslo.
+name: Bus Times Norway
+desc: Realtime bus departures for any stop in Norway.
 author: jakobbbb
-summary: Bus departures in Oslo
+summary: Bus departures in Norway
 category: Transportation
 filename: atb_bus_times.star
 type: app
@@ -17,15 +17,19 @@ config:
     required: true
   - name: stop_name
     type: string
-    desc: The display name for the bus stop.
-    required: true
+    desc: Display name for the stop (optional; will use API name if blank).
+    required: false
+  - name: num_departures
+    type: int
+    desc: Number of departures to show (1-5).
+    default: 3
+    min: 1
+    max: 5
 entrypoint: main
 tags:
   - transportation
   - norway
-  - trondheim
   - bus
-  - atb
   - real-time
   - public-transport
   - travel
