@@ -1,6 +1,6 @@
-# Bus Times Norway
+# Norway Transport
 
-A Tidbyt app that displays real-time bus departures from any public transport stop in Norway using the Entur API.
+A Tidbyt app that displays real-time public transport departures from any stop in Norway using the Entur API.
 
 ## Features
 
