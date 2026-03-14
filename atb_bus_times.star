@@ -28,11 +28,16 @@ def minutes_until_departure(current_time, departure_time):
 
 
 def main(config):
-    # Get the stop ID from config, default to Valøyvegen if not set
-    stop_id = config.get("stop_id", "NSR:StopPlace:6286")
-    quay_id = config.get("quay_id", "NSR:Quay:11544")
+    # Get the stop ID from config
+    stop_id = config.get("stop_id")
+    quay_id = config.get("quay_id")
     stop_name = config.get("stop_name", "")
     num_departures = config.get("num_departures", 3)
+
+    if not stop_id or not quay_id:
+        return render.Root(
+            child = render.Text("Please configure stop_id and quay_id"),
+        )
 
     # GraphQL query for departures
     query = """{
@@ -75,11 +80,18 @@ def main(config):
                 children = [
                     render.Box(
                         width = 64,
-                        height = 5,
-                        color = "#333333",
-                        child = render.Text(
-                            content = stop_name or "Bus Stop",
-                            font = "CG-pixel-4x5-mono",
+                        height = 10,
+                        child = render.Column(
+                            children = [
+                                render.Text(
+                                    content = "Rutetid",
+                                    font = "CG-pixel-4x5-mono",
+                                ),
+                                render.Text(
+                                    content = stop_name or "Bus Stop",
+                                    font = "CG-pixel-4x5-mono",
+                                ),
+                            ],
                         ),
                     ),
                     render.Text("Error fetching data"),
@@ -100,10 +112,18 @@ def main(config):
         # Create the header box
         header = render.Box(
             width = 64,
-            height = 5,
-            child = render.Text(
-                content = stop_name,
-                font = "CG-pixel-4x5-mono",
+            height = 10,
+            child = render.Column(
+                children = [
+                    render.Text(
+                        content = "Rutetid",
+                        font = "CG-pixel-4x5-mono",
+                    ),
+                    render.Text(
+                        content = stop_name,
+                        font = "CG-pixel-4x5-mono",
+                    ),
+                ],
             ),
         )
 
